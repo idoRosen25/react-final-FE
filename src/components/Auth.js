@@ -3,8 +3,6 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
 import Link from '@mui/material/Link';
 import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
@@ -12,17 +10,15 @@ import Grid from '@mui/material/Grid';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import useAuth from '../hooks/useAuth';
 
 const theme = createTheme();
 
-export default function SignInSide() {
+export default function Auth() {
+  const { auth, inputs, setInputs, isLogin, setIsLogin } = useAuth();
   const handleSubmit = event => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+    auth.mutate();
   };
 
   return (
@@ -55,7 +51,7 @@ export default function SignInSide() {
               <LockOutlinedIcon />
             </Avatar>
             <Typography component="h1" variant="h5">
-              Sign in
+              {isLogin ? 'Sign In' : 'Sign Up'}
             </Typography>
             <Box
               component="form"
@@ -70,8 +66,11 @@ export default function SignInSide() {
                 id="email"
                 label="Email Address"
                 name="email"
-                autoComplete="email"
                 autoFocus
+                onChange={e =>
+                  setInputs(prev => ({ ...prev, email: e.target.value || '' }))
+                }
+                value={inputs.email}
               />
               <TextField
                 margin="normal"
@@ -81,22 +80,36 @@ export default function SignInSide() {
                 label="Password"
                 type="password"
                 id="password"
-                autoComplete="current-password"
+                onChange={e =>
+                  setInputs(prev => ({
+                    ...prev,
+                    password: e.target.value || '',
+                  }))
+                }
+                value={inputs.password}
               />
               <Button
                 type="submit"
                 fullWidth
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
+                component={Link}
+                to="/home"
               >
-                Sign In
+                {isLogin ? 'Sign In' : 'Sign Up'}
               </Button>
               <Grid container>
                 <Grid item>
-                  <Link href="#" variant="body2">
-                    {"Don't have an account? Sign Up"}
-                  </Link>
+                  <Button
+                    variant="body2"
+                    onClick={() => setIsLogin(prev => !prev)}
+                  >
+                    {isLogin
+                      ? "Don't have an account? Sign Up"
+                      : 'Already have an account? Sign In'}
+                  </Button>
                 </Grid>
+                {auth.isError && <p>{auth.error.message}</p>}
               </Grid>
             </Box>
           </Box>
