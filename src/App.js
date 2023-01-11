@@ -1,9 +1,9 @@
 import React from 'react';
 import './App.css';
-import Signup from './components/Auth';
+import SignInSide from './components/Auth';
 
 function App() {
-  return <Signup />;
+  return <SignInSide />;
 }
 
 export default App;
