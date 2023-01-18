@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { apiKeys } from '../API/apiKeys';
-import { useNavigate } from 'react-router';
+import { useNavigate } from 'react-router-dom';
 import useLocalStorage from './useLocalStorage';
 
 const initialInputs = {

@@ -1,4 +1,4 @@
-import { Navigate } from 'react-router';
+import { Navigate } from 'react-router-dom';
 import { apiKeys } from '../API/apiKeys';
 import useLocalStorage from '../hooks/useLocalStorage';
 
