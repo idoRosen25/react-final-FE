@@ -1,9 +1,14 @@
 import React from 'react';
+import Router from './components/Router';
 import './App.css';
-import SignInSide from './components/Auth';
+import { BrowserRouter } from 'react-router-dom';
 
 function App() {
-  return <SignInSide />;
+  return (
+    <BrowserRouter>
+      <Router />
+    </BrowserRouter>
+  );
 }
 
 export default App;

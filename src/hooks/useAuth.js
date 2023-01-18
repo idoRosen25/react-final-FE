@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
-import { useQueryClient } from '@tanstack/react-query';
 import { apiKeys } from '../API/apiKeys';
+import { useNavigate } from 'react-router-dom';
+import useLocalStorage from './useLocalStorage';
 
 const initialInputs = {
   email: '',
@@ -11,14 +12,16 @@ const initialInputs = {
 const useAuth = () => {
   const [inputs, setInputs] = useState(initialInputs);
   const [isLogin, setIsLogin] = useState(true);
+  const { setValue } = useLocalStorage();
 
-  const queryClient = useQueryClient();
+  const navigate = useNavigate();
+
   const auth = useMutation(
     apiKeys.auth(),
     async () => {
       const { email, password } = inputs;
       const res = await fetch(
-        isLogin
+        !isLogin
           ? process.env.REACT_APP_SIGNUP_URL
           : process.env.REACT_APP_LOGIN_URL,
         {
@@ -29,7 +32,6 @@ const useAuth = () => {
           },
         },
       );
-      console.log('res: ', res);
 
       if (!res.ok) {
         throw await res.json();
@@ -37,12 +39,12 @@ const useAuth = () => {
       return res.json();
     },
     {
-      onSuccess: userCreds => {
-        console.log('signup userCreds: ', userCreds);
-        queryClient.setQueryData(apiKeys.current(), userCreds);
+      onSuccess: (userCreds) => {
+        setValue(apiKeys.current()[0], userCreds);
+        navigate('/');
       },
       onError: ({ error }) => {
-        console.log('signup error: ', error);
+        console.error('signup error: ', error);
         //TODO: display error message to user
       },
     },
