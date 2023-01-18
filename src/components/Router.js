@@ -1,10 +1,12 @@
 import { Navigate, useRoutes } from 'react-router';
-import { Link } from 'react-router-dom';
+import useLocalStorage from '../hooks/useLocalStorage';
+import { apiKeys } from '../API/apiKeys';
 
 import SignInSide from './Auth';
 import ProtectedRoute from './ProtectedRoute';
 
 const Router = () => {
+  const { removeValue } = useLocalStorage();
   // INFO: All elements that requireed logged in user, must be wrapped with ProtectedRoute
   // Nested routes must have the full path. e.g profile nested in home is /home/profile.
 
@@ -18,7 +20,14 @@ const Router = () => {
             <ProtectedRoute redirectTo="/auth">
               <>
                 <h1>This isHome Page</h1>
-                <Link to="/home/profile">Go To Profile</Link>
+                <button
+                  onClick={() => {
+                    removeValue(apiKeys.current()[0]);
+                    window.location.reload();
+                  }}
+                >
+                  Log Out
+                </button>
               </>
             </ProtectedRoute>
           ),
