@@ -1,46 +1,53 @@
-import { Navigate, useNavigate, Routes, Route } from 'react-router';
+import { Navigate, useRoutes } from 'react-router';
+import { Link } from 'react-router-dom';
+
 import SignInSide from './Auth';
 import ProtectedRoute from './ProtectedRoute';
 
 const Router = () => {
-  const navigate = useNavigate();
-
   // INFO: All elements that requireed logged in user, must be wrapped with ProtectedRoute
-  return (
-    <Routes>
-      <Route path="/home">
-        <Route
-          path=""
-          element={
-            <ProtectedRoute>
+  // Nested routes must have the full path. e.g profile nested in home is /home/profile.
+
+  const elements = useRoutes([
+    {
+      path: '/home',
+      children: [
+        {
+          path: '',
+          element: (
+            <ProtectedRoute redirectTo="/auth">
               <>
-                <h1>This is HOME page</h1>
-                <button
-                  onClick={() => {
-                    navigate('/home/profile');
-                  }}
-                >
-                  Go To Profile
-                </button>
+                <h1>This isHome Page</h1>
+                <Link to="/home/profile">Go To Profile</Link>
               </>
             </ProtectedRoute>
-          }
-        />
-        <Route
-          path="profile"
-          element={
-            <ProtectedRoute>
+          ),
+        },
+        {
+          path: '/home/profile',
+          element: (
+            <ProtectedRoute redirectTo="/auth">
               <>
-                <h1>This is Profile page</h1>
+                <h1>This is Profile Page</h1>
               </>
             </ProtectedRoute>
-          }
-        />
-      </Route>
-      <Route path="/auth" element={<SignInSide />} />
-      <Route path="*" element={<Navigate to="/home" />} />
-    </Routes>
-  );
+          ),
+        },
+      ],
+    },
+    {
+      path: '/auth',
+      children: [],
+      element: <SignInSide />,
+    },
+    {
+      path: '*',
+      children: [],
+      element: <Navigate to="/home" />,
+    },
+  ]);
+
+  return elements;
 };
 
 export default Router;
