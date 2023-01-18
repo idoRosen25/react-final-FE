@@ -1,12 +1,11 @@
 import { Navigate } from 'react-router';
-import { useQueryClient } from '@tanstack/react-query';
 import { apiKeys } from '../API/apiKeys';
+import useLocalStorage from '../hooks/useLocalStorage';
 
 const ProtectedRoute = ({ children, redirectTo }) => {
-  const queryClient = useQueryClient();
-  const user = queryClient.getQueryData(apiKeys.current());
-  console.log('user: ', user);
-  return !!queryClient.getQueryData(apiKeys.current()) ? (
+  const { getValue } = useLocalStorage();
+
+  return !!getValue(apiKeys.current()[0]) ? (
     children
   ) : (
     <Navigate to={redirectTo} />

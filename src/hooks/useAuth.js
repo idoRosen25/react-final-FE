@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
-import { useQueryClient } from '@tanstack/react-query';
 import { apiKeys } from '../API/apiKeys';
 import { useNavigate } from 'react-router';
+import useLocalStorage from './useLocalStorage';
 
 const initialInputs = {
   email: '',
@@ -12,9 +12,10 @@ const initialInputs = {
 const useAuth = () => {
   const [inputs, setInputs] = useState(initialInputs);
   const [isLogin, setIsLogin] = useState(true);
+  const { setValue } = useLocalStorage();
+
   const navigate = useNavigate();
 
-  const queryClient = useQueryClient();
   const auth = useMutation(
     apiKeys.auth(),
     async () => {
@@ -40,8 +41,7 @@ const useAuth = () => {
     },
     {
       onSuccess: (userCreds) => {
-        console.log('signup userCreds: ', userCreds);
-        queryClient.setQueryData(apiKeys.current(), userCreds);
+        setValue(apiKeys.current()[0], userCreds);
         navigate('/');
       },
       onError: ({ error }) => {
