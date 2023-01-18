@@ -14,7 +14,7 @@ import useAuth from '../hooks/useAuth';
 
 const theme = createTheme();
 
-export default function Auth() {
+const Auth = () => {
   const { auth, inputs, setInputs, isLogin, setIsLogin } = useAuth();
 
   const handleSubmit = (event) => {
@@ -120,4 +120,5 @@ export default function Auth() {
       </Grid>
     </ThemeProvider>
   );
-}
+};
+export default Auth;

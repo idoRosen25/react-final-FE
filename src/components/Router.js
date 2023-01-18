@@ -2,8 +2,8 @@ import { Navigate, useRoutes } from 'react-router-dom';
 import useLocalStorage from '../hooks/useLocalStorage';
 import { apiKeys } from '../API/apiKeys';
 
-import SignInSide from './Auth';
 import ProtectedRoute from './ProtectedRoute';
+import Auth from './Auth';
 
 const Router = () => {
   const { removeValue } = useLocalStorage();
@@ -47,7 +47,7 @@ const Router = () => {
     {
       path: '/auth',
       children: [],
-      element: <SignInSide />,
+      element: <Auth />,
     },
     {
       path: '*',
