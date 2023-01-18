@@ -3,7 +3,7 @@ const useLocalStorage = () => {
     try {
       localStorage.setItem(key, JSON.stringify(value));
     } catch (e) {
-      console.log(e);
+      console.error(e);
     }
   };
 
@@ -12,7 +12,7 @@ const useLocalStorage = () => {
       const item = localStorage.getItem(key);
       return item ? JSON.parse(item) : null;
     } catch (e) {
-      console.log(e);
+      console.error(e);
       return null;
     }
   };
@@ -21,7 +21,7 @@ const useLocalStorage = () => {
     try {
       localStorage.removeItem(key);
     } catch (e) {
-      console.log(e);
+      console.error(e);
     }
   };
 

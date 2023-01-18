@@ -32,7 +32,6 @@ const useAuth = () => {
           },
         },
       );
-      console.log('res: ', res);
 
       if (!res.ok) {
         throw await res.json();
@@ -45,7 +44,7 @@ const useAuth = () => {
         navigate('/');
       },
       onError: ({ error }) => {
-        console.log('signup error: ', error);
+        console.error('signup error: ', error);
         //TODO: display error message to user
       },
     },
