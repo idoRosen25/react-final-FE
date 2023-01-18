@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { useQueryClient } from '@tanstack/react-query';
 import { apiKeys } from '../API/apiKeys';
+import { useNavigate } from 'react-router';
 
 const initialInputs = {
   email: '',
@@ -11,6 +12,7 @@ const initialInputs = {
 const useAuth = () => {
   const [inputs, setInputs] = useState(initialInputs);
   const [isLogin, setIsLogin] = useState(true);
+  const navigate = useNavigate();
 
   const queryClient = useQueryClient();
   const auth = useMutation(
@@ -18,7 +20,7 @@ const useAuth = () => {
     async () => {
       const { email, password } = inputs;
       const res = await fetch(
-        isLogin
+        !isLogin
           ? process.env.REACT_APP_SIGNUP_URL
           : process.env.REACT_APP_LOGIN_URL,
         {
@@ -37,9 +39,10 @@ const useAuth = () => {
       return res.json();
     },
     {
-      onSuccess: userCreds => {
+      onSuccess: (userCreds) => {
         console.log('signup userCreds: ', userCreds);
         queryClient.setQueryData(apiKeys.current(), userCreds);
+        navigate('/');
       },
       onError: ({ error }) => {
         console.log('signup error: ', error);

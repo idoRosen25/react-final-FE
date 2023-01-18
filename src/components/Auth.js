@@ -16,7 +16,8 @@ const theme = createTheme();
 
 export default function Auth() {
   const { auth, inputs, setInputs, isLogin, setIsLogin } = useAuth();
-  const handleSubmit = event => {
+
+  const handleSubmit = (event) => {
     event.preventDefault();
     auth.mutate();
   };
@@ -67,8 +68,11 @@ export default function Auth() {
                 label="Email Address"
                 name="email"
                 autoFocus
-                onChange={e =>
-                  setInputs(prev => ({ ...prev, email: e.target.value || '' }))
+                onChange={(e) =>
+                  setInputs((prev) => ({
+                    ...prev,
+                    email: e.target.value || '',
+                  }))
                 }
                 value={inputs.email}
               />
@@ -80,8 +84,8 @@ export default function Auth() {
                 label="Password"
                 type="password"
                 id="password"
-                onChange={e =>
-                  setInputs(prev => ({
+                onChange={(e) =>
+                  setInputs((prev) => ({
                     ...prev,
                     password: e.target.value || '',
                   }))
@@ -89,12 +93,11 @@ export default function Auth() {
                 value={inputs.password}
               />
               <Button
-                type="submit"
                 fullWidth
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
                 component={Link}
-                to="/home"
+                onClick={handleSubmit}
               >
                 {isLogin ? 'Sign In' : 'Sign Up'}
               </Button>
@@ -102,7 +105,7 @@ export default function Auth() {
                 <Grid item>
                   <Button
                     variant="body2"
-                    onClick={() => setIsLogin(prev => !prev)}
+                    onClick={() => setIsLogin((prev) => !prev)}
                   >
                     {isLogin
                       ? "Don't have an account? Sign Up"
