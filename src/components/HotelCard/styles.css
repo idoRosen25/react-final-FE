@@ -1,0 +1,23 @@
+.hotel-card {
+  border: 1px solid gray;
+  border-radius: 10px !important;
+  box-sizing: border-box;
+  margin: 1rem 0.25rem 2rem;
+  display: flex;
+  flex-direction: column;
+}
+.card-image {
+  height: 35vh;
+  width: calc(640px * 0.6);
+}
+
+@media screen and (min-width: 768px) {
+  .hotel-card {
+    flex-direction: row;
+  }
+}
+@media screen and (min-width: 768px) and (max-width: 1020px) {
+  .card-image {
+    width: calc(640px * 0.8);
+  }
+}

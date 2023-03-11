@@ -11,16 +11,14 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import useAuth from '../hooks/useAuth';
+import Alert from '@mui/material/Alert';
+import Stack from '@mui/material/Stack';
 
 const theme = createTheme();
 
 const Auth = () => {
-  const { auth, inputs, setInputs, isLogin, setIsLogin } = useAuth();
-
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    auth.mutate();
-  };
+  const { auth, inputs, setInputs, isLogin, setIsLogin, notify, handleSubmit } =
+    useAuth();
 
   return (
     <ThemeProvider theme={theme}>
@@ -115,6 +113,22 @@ const Auth = () => {
                 {auth.isError && <p>{auth.error.message}</p>}
               </Grid>
             </Box>
+            {notify && (
+              <Stack sx={{ width: '70%', marginLeft: '15%', marginTop: '10%' }}>
+                <Alert
+                  severity="error"
+                  variant="outlined"
+                  sx={{ width: '80%' }}
+                >
+                  <Typography variant="subtitle1" gutterBottom>{`${
+                    isLogin ? 'Login' : 'Signup'
+                  } Error`}</Typography>
+                  <Typography variant="subtitle2" gutterBottom>
+                    {auth.error?.error?.message || 'submothing went wrong'}
+                  </Typography>
+                </Alert>
+              </Stack>
+            )}
           </Box>
         </Grid>
       </Grid>

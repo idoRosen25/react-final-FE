@@ -1,4 +1,5 @@
-import { useState } from 'react';
+/* eslint-disable react-hooks/exhaustive-deps */
+import { useState, useEffect } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { apiKeys } from '../API/apiKeys';
 import { useNavigate } from 'react-router-dom';
@@ -13,6 +14,7 @@ const useAuth = () => {
   const [inputs, setInputs] = useState(initialInputs);
   const [isLogin, setIsLogin] = useState(true);
   const { setValue } = useLocalStorage();
+  const [notify, setNotify] = useState(false);
 
   const navigate = useNavigate();
 
@@ -44,13 +46,33 @@ const useAuth = () => {
         navigate('/');
       },
       onError: ({ error }) => {
-        console.error('signup error: ', error);
-        //TODO: display error message to user
+        // console.error('signup error: ', error);
+        setNotify(true);
+        return error;
       },
     },
   );
 
-  return { auth, inputs, setInputs, isLogin, setIsLogin };
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    auth.mutate();
+  };
+
+  useEffect(() => {
+    if (auth.isError && notify) {
+      setNotify(true);
+    }
+    let timeout = setTimeout(() => {
+      setNotify(false);
+    }, 2000);
+
+    return () => clearTimeout(timeout);
+  }, [auth.isError, auth.error, notify, auth]);
+
+  useEffect(() => {
+    notify && setNotify(false);
+  }, [isLogin]);
+  return { auth, inputs, setInputs, isLogin, setIsLogin, handleSubmit, notify };
 };
 
 export default useAuth;

@@ -1,5 +1,5 @@
 import { Navigate, useRoutes } from 'react-router-dom';
-import Home from '../pages/Home';
+import Home from '../pages/Home/Home';
 
 import ProtectedRoute from './ProtectedRoute';
 import Auth from './Auth';
