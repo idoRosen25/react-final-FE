@@ -6,9 +6,11 @@ import {
   CardMedia,
   Typography,
 } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 import './styles.css';
 
 const HotelCard = ({ hotel }) => {
+  const navigate = useNavigate();
   return (
     <Card key={`hotel_${hotel.id}`} className="hotel-card">
       <CardMedia
@@ -26,7 +28,19 @@ const HotelCard = ({ hotel }) => {
           </Typography>
         </CardContent>
         <CardActions className="card-actions">
-          <Button size="small">Book</Button>
+          <Button
+            size="small"
+            onClick={(e) => {
+              console.log('e: ', e);
+              e.preventDefault();
+              e.stopPropagation();
+              navigate(`/hotel/${hotel.id}/booking`, {
+                replace: true,
+              });
+            }}
+          >
+            Book
+          </Button>
           <Button size="small">Learn More</Button>
         </CardActions>
       </div>
