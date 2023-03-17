@@ -1,8 +1,9 @@
 import { Navigate, useRoutes } from 'react-router-dom';
-import Home from '../pages/Home';
+import Home from '../pages/Home/Home';
 
 import ProtectedRoute from './ProtectedRoute';
 import Auth from './Auth';
+import Booking from '../pages/Booking/Booking';
 
 const Router = () => {
   // INFO: All elements that requireed logged in user, must be wrapped with ProtectedRoute
@@ -15,7 +16,7 @@ const Router = () => {
         {
           path: '',
           element: (
-            <ProtectedRoute redirectTo="/auth">
+            <ProtectedRoute>
               <Home />
             </ProtectedRoute>
           ),
@@ -23,10 +24,23 @@ const Router = () => {
         {
           path: '/home/profile',
           element: (
-            <ProtectedRoute redirectTo="/auth">
+            <ProtectedRoute>
               <>
                 <h1>This is Profile Page</h1>
               </>
+            </ProtectedRoute>
+          ),
+        },
+      ],
+    },
+    {
+      path: 'hotel/:id',
+      children: [
+        {
+          path: '/hotel/:id/booking',
+          element: (
+            <ProtectedRoute>
+              <Booking />
             </ProtectedRoute>
           ),
         },
