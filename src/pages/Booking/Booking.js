@@ -86,12 +86,12 @@ const Booking = () => {
                   <RadioGroup
                     defaultValue={'standard'}
                     value={bookingFormData.room?.roomType}
-                    onChange={(e) => {
+                    onChange={(e) =>
                       setBookingFormData((prev) => ({
                         ...prev,
-                        room: rooms[e.target.value]?.room || null,
-                      }));
-                    }}
+                        room: rooms[e.target.value]?.id || null,
+                      }))
+                    }
                   >
                     {Object.keys(rooms).map((roomKey) => {
                       const { id: room } = rooms[roomKey];
@@ -141,12 +141,12 @@ const Booking = () => {
                     <DatePicker
                       required
                       disablePast
-                      onChange={(e) => {
+                      onChange={(e) =>
                         setBookingFormData((prev) => ({
                           ...prev,
                           checkInDate: e.toISOString(),
-                        }));
-                      }}
+                        }))
+                      }
                     />
                   </LocalizationProvider>
                 </div>
@@ -161,12 +161,12 @@ const Booking = () => {
                         dayjs(bookingFormData?.checkInDate)
                       }
                       disableHighlightToday
-                      onChange={(e) => {
+                      onChange={(e) =>
                         setBookingFormData((prev) => ({
                           ...prev,
                           checkOutDate: e.toISOString(),
-                        }));
-                      }}
+                        }))
+                      }
                     />
                   </LocalizationProvider>
                 </div>
