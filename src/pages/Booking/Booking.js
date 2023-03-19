@@ -85,7 +85,6 @@ const Booking = () => {
                   <FormLabel>Choose A Room:</FormLabel>
                   <RadioGroup
                     defaultValue={'standard'}
-                    value={bookingFormData.room?.roomType}
                     onChange={(e) =>
                       setBookingFormData((prev) => ({
                         ...prev,
@@ -93,19 +92,17 @@ const Booking = () => {
                       }))
                     }
                   >
-                    {Object.keys(rooms).map((roomKey) => {
-                      const { id: room } = rooms[roomKey];
-                      return (
+                    {Object.keys(rooms).map(
+                      (roomKey) =>
                         roomKey !== '_id' && (
                           <FormControlLabel
                             key={roomKey}
-                            value={room.roomType}
+                            value={rooms[roomKey]?.id.roomType}
                             control={<Radio />}
                             label={`${roomKey}`}
                           ></FormControlLabel>
-                        )
-                      );
-                    })}
+                        ),
+                    )}
                   </RadioGroup>
                 </FormControl>
                 <FormControl fullWidth>
@@ -116,7 +113,6 @@ const Booking = () => {
                     labelId="demo-simple-select-label"
                     id="demo-simple-select"
                     defaultValue={1}
-                    value={bookingFormData.numberOfGuests}
                     label="# of guests"
                     onChange={(e) =>
                       setBookingFormData((prev) => ({
@@ -180,7 +176,6 @@ const Booking = () => {
                 <TextField
                   required
                   label="First Name"
-                  value={bookingFormData.guest.firstName}
                   defaultValue=""
                   onChange={(e) =>
                     setBookingFormData((prev) => ({
@@ -193,7 +188,6 @@ const Booking = () => {
                 <TextField
                   required
                   label="Last Name"
-                  value={bookingFormData.guest.lastName}
                   defaultValue=""
                   onChange={(e) =>
                     setBookingFormData((prev) => ({
@@ -206,7 +200,6 @@ const Booking = () => {
                 <TextField
                   required
                   label="Email Address"
-                  value={bookingFormData.guest.email}
                   defaultValue=""
                   onChange={(e) =>
                     setBookingFormData((prev) => ({
@@ -224,7 +217,6 @@ const Booking = () => {
                     label="City"
                     style={{ marginBottom: '2%' }}
                     defaultValue=""
-                    value={bookingFormData?.guest.address?.city}
                     onChange={(e) =>
                       setBookingFormData((prev) => ({
                         ...prev,
@@ -242,7 +234,6 @@ const Booking = () => {
                     label="Country"
                     style={{ marginBottom: '2%' }}
                     defaultValue=""
-                    value={bookingFormData?.guest.address?.country}
                     onChange={(e) =>
                       setBookingFormData((prev) => ({
                         ...prev,
@@ -260,7 +251,6 @@ const Booking = () => {
                     label="Street"
                     style={{ marginBottom: '2%' }}
                     defaultValue=""
-                    value={bookingFormData?.guest.address?.street}
                     onChange={(e) =>
                       setBookingFormData((prev) => ({
                         ...prev,
