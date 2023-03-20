@@ -2,7 +2,6 @@ import useHotels from '../../hooks/useHotels';
 import HotelCard from '../../components/HotelCard/HotelCard';
 import './styles.css';
 const Home = () => {
-  console.log('loading home page');
   const { isError, error, isLoading, hotels } = useHotels();
 
   if (isError) {
@@ -15,11 +14,10 @@ const Home = () => {
     return <h1>Loading...</h1>;
   }
 
-  console.log('hotels: ', hotels);
   return (
     <section className="hotel-card-container">
       {hotels?.map((hotel) => (
-        <HotelCard hotel={hotel} />
+        <HotelCard key={hotel.id} hotel={hotel} />
       ))}
     </section>
   );

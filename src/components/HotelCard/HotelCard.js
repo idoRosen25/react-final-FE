@@ -31,7 +31,6 @@ const HotelCard = ({ hotel }) => {
           <Button
             size="small"
             onClick={(e) => {
-              console.log('e: ', e);
               e.preventDefault();
               e.stopPropagation();
               navigate(`/hotel/${hotel.id}/booking`, {

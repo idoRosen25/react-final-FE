@@ -9,7 +9,6 @@ const useHotelReservation = (hotelId) => {
     isLoading: hotelReservationsLoading,
   } = useQuery(apiKeys.hotelReservations(hotelId), async () => {
     const response = await api.get(`/hotels/${hotelId}/reservations`);
-    console.log('response: ', response.data);
     return response.data;
   });
   return {

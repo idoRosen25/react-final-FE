@@ -24,7 +24,7 @@ import dayjs from 'dayjs';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Box } from '@mui/system';
 const Booking = () => {
   const { id } = useParams();
@@ -35,37 +35,17 @@ const Booking = () => {
     hotelDetailsLoading,
     submitBooking,
     isBookingLoading,
-    isBookingError,
-    bookingError,
+    showAlert,
+    setShowAlert,
   } = useBooking(id);
 
-  const { id: hotelId, image, name, rooms } = hotelDetails;
+  const { _id: hotelId, image, name, rooms } = hotelDetails;
 
-  const { bookingFormData, setBookingFormData } = useBookingPage(
-    hotelId,
-    rooms,
-  );
+  const { bookingFormData, setBookingFormData, maxGuests, mappedRooms } =
+    useBookingPage(hotelId, rooms);
+
   const [showDetailsForm, setShowDetailsForm] = useState(false);
-  const [showAlert, setShowAlert] = useState({ show: false, message: '' });
-
-  useEffect(() => {
-    if (!isBookingLoading && isBookingError && bookingError) {
-      setShowAlert({
-        show: true,
-        message: bookingError?.mesage || bookingError.toString(),
-      });
-    }
-  }, [bookingError, isBookingError, isBookingLoading]);
-
-  useEffect(() => {
-    if (showAlert?.show) {
-      const timeout = setTimeout(
-        () => setShowAlert({ show: false, message: '' }),
-        3000,
-      );
-      return () => clearTimeout(timeout);
-    }
-  }, [showAlert]);
+  console.log('mapped: ', mappedRooms);
   if (hotelDetailsLoading) return <h2>Loading...</h2>;
   if (hotelDetailsError) return <h2>Error</h2>;
 
@@ -88,21 +68,33 @@ const Booking = () => {
                     onChange={(e) =>
                       setBookingFormData((prev) => ({
                         ...prev,
-                        room: rooms[e.target.value]?.id || null,
+                        room: mappedRooms.find(
+                          ({ type }) => type === e.target.value,
+                        )._id,
                       }))
                     }
                   >
-                    {Object.keys(rooms).map(
-                      (roomKey) =>
-                        roomKey !== '_id' && (
-                          <FormControlLabel
-                            key={roomKey}
-                            value={rooms[roomKey]?.id.roomType}
-                            control={<Radio />}
-                            label={`${roomKey}`}
-                          ></FormControlLabel>
-                        ),
-                    )}
+                    {mappedRooms.map((room) => {
+                      const {
+                        booked,
+                        available,
+                        _id: roomId,
+                        type,
+                        cost,
+                      } = room;
+                      return (
+                        <FormControlLabel
+                          key={`room_${roomId}`}
+                          value={type}
+                          control={<Radio disabled={available === 0} />}
+                          label={`${type.charAt(0).toUpperCase()}${type.slice(
+                            1,
+                          )} - $${cost} (${
+                            available > 0 ? `${available - booked}` : 'None'
+                          } Available)`}
+                        ></FormControlLabel>
+                      );
+                    })}
                   </RadioGroup>
                 </FormControl>
                 <FormControl fullWidth>
@@ -114,6 +106,7 @@ const Booking = () => {
                     id="demo-simple-select"
                     defaultValue={1}
                     label="# of guests"
+                    disabled={!bookingFormData.room}
                     onChange={(e) =>
                       setBookingFormData((prev) => ({
                         ...prev,
@@ -121,7 +114,7 @@ const Booking = () => {
                       }))
                     }
                   >
-                    {new Array(bookingFormData.room?.numOfBeds || 0)
+                    {new Array(maxGuests(bookingFormData?.room) || 1)
                       .fill(1)
                       .map((_, index) => (
                         <MenuItem key={`beds_${index}`} value={index + 1}>
@@ -154,7 +147,7 @@ const Booking = () => {
                       required
                       minDate={
                         bookingFormData?.checkInDate &&
-                        dayjs(bookingFormData?.checkInDate)
+                        dayjs(bookingFormData?.checkInDate).add(1, 'day')
                       }
                       disableHighlightToday
                       onChange={(e) =>

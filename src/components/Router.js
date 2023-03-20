@@ -4,6 +4,8 @@ import Home from '../pages/Home/Home';
 import ProtectedRoute from './ProtectedRoute';
 import Auth from './Auth';
 import Booking from '../pages/Booking/Booking';
+import Reservations from '../pages/Reservations/Reservations';
+import ReservationDetails from '../pages/ReservationDetails/ReservationDetails';
 
 const Router = () => {
   // INFO: All elements that requireed logged in user, must be wrapped with ProtectedRoute
@@ -41,6 +43,27 @@ const Router = () => {
           element: (
             <ProtectedRoute>
               <Booking />
+            </ProtectedRoute>
+          ),
+        },
+      ],
+    },
+    {
+      path: 'reservations',
+      children: [
+        {
+          path: '/reservations',
+          element: (
+            <ProtectedRoute>
+              <Reservations />
+            </ProtectedRoute>
+          ),
+        },
+        {
+          path: '/reservations/:id',
+          element: (
+            <ProtectedRoute>
+              <ReservationDetails />
             </ProtectedRoute>
           ),
         },

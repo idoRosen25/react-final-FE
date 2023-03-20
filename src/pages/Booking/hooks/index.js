@@ -1,9 +1,18 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo, useCallback } from 'react';
 
-const useBookingPage = (hotelId, rooms) => {
+const useBookingPage = (hotelId, rooms = []) => {
+  const mappedRooms = useMemo(
+    () =>
+      rooms?.map((room) => ({
+        ...room.room,
+        available: room.available,
+        booked: room.booked,
+      })) || [],
+    [rooms],
+  );
   const [bookingFormData, setBookingFormData] = useState({
     hotelId,
-    room: rooms?.['standard']?.id || null,
+    room: mappedRooms[0]?._id || null,
     checkInDate: null,
     checkOutDate: null,
     numberOfGuests: 1,
@@ -19,13 +28,22 @@ const useBookingPage = (hotelId, rooms) => {
     },
   });
 
+  const maxGuests = useCallback(
+    (roomId) => {
+      if (!roomId) return 0;
+      const room = mappedRooms.find((room) => room._id === roomId);
+      return room?.numOfBeds || 0;
+    },
+    [mappedRooms],
+  );
+
   useEffect(() => {
     setBookingFormData((prev) => ({
       ...prev,
-      room: rooms?.['standard']?.id || null,
+      room: mappedRooms[0]?._id || null,
     }));
-  }, [hotelId, rooms]);
+  }, [hotelId, mappedRooms]);
 
-  return { bookingFormData, setBookingFormData };
+  return { bookingFormData, setBookingFormData, maxGuests, mappedRooms };
 };
 export default useBookingPage;
