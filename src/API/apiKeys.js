@@ -7,4 +7,5 @@ export const apiKeys = {
   reservationById: (id) => ['reservation', id],
   deleteReservation: (id) => ['reservation', id, 'delete'],
   createBooking: (id) => ['hotel', id, 'reservations', 'create'],
+  hotelMonthlyStats: (id) => ['hotel', id, 'stats', 'months'],
 };

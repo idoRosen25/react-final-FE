@@ -10,7 +10,6 @@ const useHotelDetails = (hotelId) => {
     error: hotelDetailsError,
   } = useQuery(apiKeys.hotelById(hotelId), async () => {
     const response = await api.get(`/hotels/${hotelId}`);
-    console.log('hotel data: ', response);
     return response.data.hotel;
   });
 

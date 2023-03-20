@@ -2,6 +2,9 @@ import { useMemo } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import useHotelDetails from './hooks/useHotalDetails';
 import { Box, Grid, Avatar, Typography, Button } from '@mui/material';
+import useHotelReservationStat from '../../hooks/useStats/useHotelResrvationStat';
+import { monthName } from '../../consts/dates';
+import { GroupedBarChart } from '../../components/GroupBarChart/GroupBarChart';
 
 const HotelDetails = () => {
   const { id } = useParams();
@@ -14,9 +17,22 @@ const HotelDetails = () => {
     hotelDetailsError,
   } = useHotelDetails(id);
 
-  const { address, image, name, rooms } = hotelDetails;
+  const { statSubmittedOrders } = useHotelReservationStat(id);
+  const { address, image, name, rooms } = hotelDetails || {};
 
-  const { street, city, country } = address;
+  const reducedReservationDates = useMemo(() => {
+    const reduced = [];
+    statSubmittedOrders &&
+      Object.keys(statSubmittedOrders).map((key) =>
+        reduced.push({
+          label: monthName[key - 1],
+          values: statSubmittedOrders[key],
+        }),
+      );
+
+    return reduced;
+  }, [statSubmittedOrders]);
+  const { street, city, country } = address || {};
   const mappedRooms = useMemo(
     () =>
       rooms?.map((room) => ({
@@ -39,6 +55,7 @@ const HotelDetails = () => {
         mt: { xs: 2 },
         width: { xs: '90%' },
         m: 'auto',
+        mb: 5,
       }}
     >
       <Grid container spacing={2}>
@@ -105,10 +122,42 @@ const HotelDetails = () => {
             <Button
               variant="contained"
               sx={{ mt: { xs: 1 }, fontSize: { xs: '0.5rem' } }}
-              onClick={() => navigate('/home')}
+              onClick={() =>
+                navigate(`/hotel/${id}/booking`, { replace: true })
+              }
             >
               Book Now
             </Button>
+          </Box>
+        </Grid>
+      </Grid>
+      <Grid
+        container
+        spacing={2}
+        sx={{ mt: { xs: 2 }, display: { xs: 'none', md: 'block' } }}
+      >
+        <Grid item xs={12}>
+          <Box sx={{ width: '100%', pl: { xs: 0.5 } }}>
+            <Typography
+              variant="subtitle1"
+              sx={{
+                color: 'cornflowerblue',
+                textDecorationLine: 'underline',
+                mb: { xs: -0.5 },
+              }}
+            >
+              Statistics Data:
+            </Typography>
+          </Box>
+        </Grid>
+        <Grid item xs={12}>
+          <Box sx={{ width: '100%', pl: { xs: 0.5, md: 2 } }}>
+            {reducedReservationDates && (
+              <GroupedBarChart
+                yLabel="Number of reservations"
+                data={reducedReservationDates || [{ values: [] }]}
+              />
+            )}
           </Box>
         </Grid>
       </Grid>

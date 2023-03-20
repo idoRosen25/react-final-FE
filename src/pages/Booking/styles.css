@@ -22,6 +22,7 @@
   width: fit-content;
   margin: auto;
 }
+
 @media screen and (min-width: 768px) {
   .hotel-image {
     width: 70%;
@@ -36,5 +37,21 @@
 
   .form-container {
     margin: 0;
+  }
+  .booking-content {
+    margin-top: 2%;
+  }
+}
+
+@media screen and (min-width: 1200px) {
+  .hotel-image {
+    width: 50%;
+    height: 60vh;
+    margin-left: 25%;
+    margin-bottom: -5%;
+    background-size: cover;
+  }
+  .booking-content {
+    margin-top: 4%;
   }
 }
