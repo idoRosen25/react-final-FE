@@ -6,6 +6,7 @@ import Auth from './Auth';
 import Booking from '../pages/Booking/Booking';
 import Reservations from '../pages/Reservations/Reservations';
 import ReservationDetails from '../pages/ReservationDetails/ReservationDetails';
+import HotelDetails from '../pages/HotelDetails/HotelDetails';
 
 const Router = () => {
   // INFO: All elements that requireed logged in user, must be wrapped with ProtectedRoute
@@ -38,6 +39,14 @@ const Router = () => {
     {
       path: 'hotel/:id',
       children: [
+        {
+          path: '/hotel/:id',
+          element: (
+            <ProtectedRoute>
+              <HotelDetails />
+            </ProtectedRoute>
+          ),
+        },
         {
           path: '/hotel/:id/booking',
           element: (

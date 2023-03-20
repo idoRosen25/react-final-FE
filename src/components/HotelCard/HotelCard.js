@@ -40,7 +40,18 @@ const HotelCard = ({ hotel }) => {
           >
             Book
           </Button>
-          <Button size="small">Learn More</Button>
+          <Button
+            size="small"
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              navigate(`/hotel/${hotel.id}`, {
+                replace: true,
+              });
+            }}
+          >
+            Learn More
+          </Button>
         </CardActions>
       </div>
     </Card>
