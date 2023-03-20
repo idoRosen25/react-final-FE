@@ -5,12 +5,10 @@ const Home = () => {
   const { isError, error, isLoading, hotels } = useHotels();
 
   if (isError) {
-    console.log('error');
     return <h1>Something went wrong {error?.message || error}</h1>;
   }
 
   if (isLoading) {
-    console.log('loading');
     return <h1>Loading...</h1>;
   }
 

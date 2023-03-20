@@ -45,7 +45,7 @@ const Booking = () => {
     useBookingPage(hotelId, rooms);
 
   const [showDetailsForm, setShowDetailsForm] = useState(false);
-  console.log('mapped: ', mappedRooms);
+
   if (hotelDetailsLoading) return <h2>Loading...</h2>;
   if (hotelDetailsError) return <h2>Error</h2>;
 

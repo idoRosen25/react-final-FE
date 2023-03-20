@@ -47,6 +47,7 @@ const Navbar = () => {
         }
         break;
       default:
+        navigate('/home', { replace: true });
         break;
     }
   };

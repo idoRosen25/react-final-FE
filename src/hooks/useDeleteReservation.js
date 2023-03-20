@@ -17,7 +17,6 @@ const useDeleteReservation = () => {
     apiKeys.deleteReservation(),
     async (reservationId) => {
       const response = await api.delete(`/reservation/${reservationId}`);
-      console.log('delete res: ', response);
       return response;
     },
     {
