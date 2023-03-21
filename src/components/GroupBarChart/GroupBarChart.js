@@ -32,7 +32,7 @@ export function GroupedBarChart({ data }) {
   const height = 300 - margin.top - margin.bottom;
 
   const labels = data.map(({ label }) => label);
-  const sublabels = Object.keys(data[0].values);
+  const sublabels = Object.keys(data[0]?.values || {});
   const values = data.map(({ values }) => values).flat();
 
   const scaleX = d3.scaleBand().domain(labels).range([0, width]).padding(0.2);
@@ -70,7 +70,7 @@ export function GroupedBarChart({ data }) {
               key={`rect-group-${groupIndex}`}
               transform={`translate(${scaleX(label)}, 0)`}
             >
-              {values.map((value, barIndex) => (
+              {values?.map((value, barIndex) => (
                 <Bar
                   key={`rect-${barIndex}`}
                   x={subscaleX(String(barIndex)) || 0}
@@ -105,9 +105,9 @@ export function GroupedBarChart({ data }) {
             </thead>
             <tbody>
               <tr>
-                <td>{data[tooltip.index].values[0]}</td>
-                <td>{data[tooltip.index].values[1]}</td>
-                <td>{data[tooltip.index].values[2]}</td>
+                <td>{data[tooltip.index].values?.[0]}</td>
+                <td>{data[tooltip.index].values?.[1]}</td>
+                <td>{data[tooltip.index].values?.[2]}</td>
               </tr>
             </tbody>
           </table>

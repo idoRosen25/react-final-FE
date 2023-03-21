@@ -51,7 +51,6 @@ const Reservations = () => {
             alignItems: 'center',
             justifyContent: 'center',
             height: '60vh',
-            border: '1px solid red',
           }}
         >
           <Typography variant="h6">

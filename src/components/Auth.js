@@ -22,7 +22,7 @@ const Auth = () => {
 
   return (
     <ThemeProvider theme={theme}>
-      <Grid container component="main" sx={{ height: '94vh' }}>
+      <Grid container component="main" sx={{ height: '93vh', mt: -1.5 }}>
         <CssBaseline />
         <Grid
           item
@@ -39,7 +39,7 @@ const Auth = () => {
         <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
           <Box
             sx={{
-              my: 8,
+              mb: 8,
               mx: 4,
               display: 'flex',
               flexDirection: 'column',
