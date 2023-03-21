@@ -119,7 +119,7 @@ const ReservationItem = ({ reservation, onItemClick }) => {
             {`Total Beds: ${roomId.numOfBeds}`}
           </Typography>
           <Typography variant="subtitle2">
-            {`${roomId.roomCost} USD per night`}
+            {`${roomId.cost} USD per night`}
           </Typography>
         </ListItemText>
       </Box>
